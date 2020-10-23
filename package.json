@@ -1,0 +1,19 @@
+{
+  "name": "selection-js",
+  "version": "1.0.0",
+  "description": "Js library which provides customizable tooltip menu on text selection",
+  "main": "selection.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AntonOrlov/selection-js.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AntonOrlov/selection-js/issues"
+  },
+  "homepage": "https://github.com/AntonOrlov/selection-js#readme"
+}

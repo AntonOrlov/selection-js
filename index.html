@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Test page</title>
+  </head>
+  <body>
+    <div class="text-1">
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sollicitudin dui ut neque consequat condimentum. Cras porta imperdiet mauris id interdum. Sed rutrum eleifend nunc ac iaculis. Praesent ornare nulla ut metus tempus, malesuada rhoncus justo posuere. Pellentesque turpis turpis, ornare quis neque ut, dapibus bibendum ante. Nulla sit amet nibh tempus massa mollis fermentum. Pellentesque id auctor leo, et facilisis sapien. Aenean vehicula a justo sed aliquet. Curabitur bibendum, nunc sit amet luctus gravida, augue elit imperdiet metus, id ultrices urna nisl quis ante. Phasellus eros lacus, finibus accumsan lacus at, scelerisque finibus orci. Nunc interdum nec mauris egestas finibus. Morbi ut nisl tristique, auctor orci id, feugiat ante. Nulla massa ligula, interdum ac dictum ut, egestas eget est.</p>
+
+      <p>In vitae risus quis augue scelerisque dapibus quis nec turpis. Aenean tristique urna quis orci hendrerit, ac rhoncus justo bibendum. Aliquam fermentum neque arcu, at pellentesque augue vulputate ac. Aenean ac orci at quam pulvinar maximus. Maecenas sit amet dapibus sapien. Quisque non accumsan ligula. Nam volutpat orci eu ullamcorper porttitor. Ut eget ligula dolor. Nulla facilisi. Suspendisse ac interdum ligula. Nam volutpat nunc non pretium facilisis. Curabitur convallis blandit ex, sodales sagittis arcu auctor sed. Sed tempor, nisl vel ultricies euismod, lectus purus aliquam dolor, quis pharetra ligula nibh a ipsum. Proin tempus consectetur nunc, vel commodo neque tristique in.</p>
+    </div>
+    <div class="text-2">
+      <p>Integer tempor augue eget mattis rhoncus. Quisque ultricies consectetur nunc sit amet pharetra. Praesent nec augue eu purus suscipit gravida hendrerit commodo lacus. Maecenas tempus malesuada odio eu placerat. Integer eget ex mollis, mattis magna at, molestie turpis. Fusce a lorem rhoncus, congue diam eu, viverra risus. Maecenas facilisis suscipit magna non ultricies. Nunc varius non nisi quis hendrerit. Ut nec neque et elit ultricies convallis. Vivamus quam sem, placerat rhoncus turpis et, semper pharetra quam. Vestibulum lacus erat, laoreet lacinia sapien id, ultrices tempus tortor. Ut congue nisl et egestas consectetur.</p>
+
+      <p>Proin nec tristique tellus. Suspendisse ornare suscipit libero, at hendrerit sem tempor vitae. Pellentesque pellentesque iaculis tincidunt. Nunc porttitor aliquam efficitur. Quisque placerat fermentum ex, ac eleifend quam. Nunc blandit ut elit ac rutrum. Integer in ipsum a risus scelerisque fringilla. Nulla congue consequat velit, eget sodales nulla tincidunt at. Cras laoreet sem at ante elementum, at condimentum nulla fermentum. Mauris nec nunc ut orci dictum suscipit. Nunc ligula augue, tempor in eros sit amet, tristique ultrices risus. Phasellus volutpat urna eget velit hendrerit, et dapibus nisi elementum. In eu est semper, laoreet turpis sed, interdum nunc. Donec vitae dui dui.</p>
+    </div>
+  </body>
+  <script type="text/javascript" src="selection.js"></script>
+<script type="text/javascript">
+  const selection = new Selection()
+  selection.config({
+    menu: [
+      {
+        innerHTML: 'Item 1',
+        cb: (text) => alert(`Item 1: ${text}`)
+      },
+      {
+        innerHTML: 'Item 2',
+        cb: (text) => alert(`Item 2: ${text}`)
+      }
+    ],
+    rootElement: document.querySelector('.text-1')
+  }).init();
+</script>
+</html>
