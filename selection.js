@@ -1,36 +1,36 @@
 const Selection = (function() {
   function copyTextToClipboard(text) {
-    let textArea = document.createElement('textarea');
-    textArea.style.position = 'fixed';
-    textArea.style.top = 0;
-    textArea.style.left = 0;
-    textArea.style.width = '2em';
-    textArea.style.height = '2em';
-    textArea.style.padding = 0;
-    textArea.style.border = 'none';
-    textArea.style.outline = 'none';
-    textArea.style.boxShadow = 'none';
-    textArea.style.background = 'transparent';
-    textArea.value = text;
+    const textArea = document.createElement('textarea')
+    textArea.style.position = 'fixed'
+    textArea.style.top = 0
+    textArea.style.left = 0
+    textArea.style.width = '2em'
+    textArea.style.height = '2em'
+    textArea.style.padding = 0
+    textArea.style.border = 'none'
+    textArea.style.outline = 'none'
+    textArea.style.boxShadow = 'none'
+    textArea.style.background = 'transparent'
+    textArea.value = text
 
-    document.body.appendChild(textArea);
-    textArea.focus();
-    textArea.select();
+    document.body.appendChild(textArea)
+    textArea.focus()
+    textArea.select()
 
     try {
-      let successful = document.execCommand('copy');
-      let msg = successful ? 'successful' : 'unsuccessful';
-      console.log('Copying text command was ' + msg);
+      const successful = document.execCommand('copy')
+      const msg = successful ? 'successful' : 'unsuccessful'
+      console.log('Copying text command was ' + msg)
     } catch (err) {
-      console.log('Oops, unable to copy');
+      console.log('Oops, unable to copy')
     }
 
-    document.body.removeChild(textArea);
+    document.body.removeChild(textArea)
   }
 
-  function popupwindow(url, title, w, h) {
-    let left = screen.width / 2 - w / 2;
-    let top = screen.height / 2 - h / 2;
+  function popupWindow(url, title, w, h) {
+    const left = screen.width / 2 - w / 2
+    const top = screen.height / 2 - h / 2
     return window.open(
       url,
       title,
@@ -42,7 +42,7 @@ const Selection = (function() {
         top +
         ', left=' +
         left
-    );
+    )
   }
 
   function _selection() {
@@ -58,72 +58,85 @@ const Selection = (function() {
       }
     ]
     menu.disable = false
-    let rootElement = window;
-    let selection = '';
-    let text = '';
-    let bgcolor = 'rgb(117, 117, 117, 1)';
-    let color = '#fff';
+    const selectionId = 'selection-' + Math.floor(Math.random() * 9999999)
+    let rootElement = window
+    let selection = null
+    let selectionNode = null
+    let text = ''
+    let bgcolor = 'rgb(117, 117, 117, 1)'
+    let color = '#fff'
 
-    let _icons = {};
-    let arrowsize = 5;
-    let buttonmargin = 7 * 2;
-    let iconsize = 24 + buttonmargin;
-    let top = 0;
-    let left = 0;
+    let _icons = {}
+    let arrowsize = 5
+    let buttonmargin = 7 * 2
+    let iconsize = 24 + buttonmargin
+    let top = 0
+    let left = 0
 
     function Button(innerHTML, cb) {
-      const btn = document.createElement('div');
-      btn.style = 'display:inline-block;' + 'margin:7px;' + 'cursor:pointer;' + 'transition:all .2s ease-in-out;';
-      btn.innerHTML = innerHTML;
-      btn.onclick = () => cb(text)
+      const btn = document.createElement('div')
+      btn.style = 'display:inline-block;' + 'margin:7px;' + 'cursor:pointer;' + 'transition:all .2s ease-in-out;'
+      btn.innerHTML = innerHTML
+      btn.onclick = () => cb(text, selectionNode)
       btn.onmouseover = function() {
-        this.style.transform = 'scale(1.2)';
-      };
+        this.style.transform = 'scale(1.2)'
+      }
       btn.onmouseout = function() {
-        this.style.transform = 'scale(1)';
-      };
-      return btn;
+        this.style.transform = 'scale(1)'
+      }
+      return btn
     }
 
     function IconStyle() {
-      const style = document.createElement('style');
-      style.innerHTML = `.selection__icon {fill: ${color};}`;
-      document.body.appendChild(style);
+      const style = document.createElement('style')
+      style.innerHTML = `.selection__icon {fill: ${color};}`
+      document.body.appendChild(style)
     }
 
     function appendIcons() {
-      const div = document.createElement('div');
+      const div = document.createElement('div')
       menu.forEach((item) => {
         div.appendChild(Button(item.innerHTML, item.cb));
       })
       return {
         icons: div,
         length: menu.length
-      };
+      }
     }
 
     function setTooltipPosition() {
-      const position = selection.getRangeAt(0).getBoundingClientRect();
+      let position
+      if (selection.isCollapsed) {
+        selectionNode = selection
+          .anchorNode
+          .childNodes[selection.anchorOffset]
+        position = selectionNode.getBoundingClientRect()
+      } else {
+        selectionNode = selection.anchorNode.parentNode
+        position = selection
+          .getRangeAt(0)
+          .getBoundingClientRect()
+      }
       const DOCUMENT_SCROLL_TOP =
-        window.pageXOffset || document.documentElement.scrollTop || document.body.scrollTop;
-      _top = position.top + DOCUMENT_SCROLL_TOP - iconsize - arrowsize;
-      top = _top >= 0 ? _top : 0;
-      left = position.left + (position.width - iconsize * _icons.length) / 2;
+        window.pageXOffset || document.documentElement.scrollTop || document.body.scrollTop,
+        _top = position.top + DOCUMENT_SCROLL_TOP - iconsize - arrowsize
+      top = _top >= 0 ? _top : 0
+      left = position.left + (position.width - iconsize * _icons.length) / 2
     }
 
     function moveTooltip() {
-      setTooltipPosition();
-      let tooltip = document.querySelector('.selection');
-      tooltip.style.top = `${top}px`;
-      tooltip.style.left = `${left}px`;
+      setTooltipPosition()
+      const tooltip = document.getElementById(selectionId)
+      tooltip.style.top = `${top}px`
+      tooltip.style.left = `${left}px`
     }
 
     function drawTooltip() {
-      _icons = appendIcons();
-      setTooltipPosition();
+      _icons = appendIcons()
+      setTooltipPosition()
 
-      const div = document.createElement('div');
-      div.className = 'selection';
+      const div = document.createElement('div')
+      div.id = selectionId
       div.style =
         'color: ' + color + ';' +
         'position:absolute;' +
@@ -133,11 +146,11 @@ const Selection = (function() {
         'left:' + left + 'px;' +
         'transition:all .2s ease-in-out;' +
         'box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);' +
-        'z-index:99999;';
+        'z-index:99999;'
 
-      div.appendChild(_icons.icons);
+      div.appendChild(_icons.icons)
 
-      const arrow = document.createElement('div');
+      const arrow = document.createElement('div')
       arrow.style =
         'position:absolute;' +
         'border-left:' + arrowsize +
@@ -147,79 +160,79 @@ const Selection = (function() {
         'bottom:-' + (arrowsize - 1) + 'px;' +
         'left: 50%;' + 
         'width:0;' +
-        'height:0;';
+        'height:0;'
 
       if (!menu.disable) {
-        div.appendChild(arrow);
+        div.appendChild(arrow)
       }
 
-      document.body.appendChild(div);
+      document.body.appendChild(div)
     }
 
     function removeToolTip() {
-      const el = document.querySelector('.selection')
-      if (el) el.remove();
+      const el = document.getElementById(selectionId)
+      if (el) el.remove()
     }
 
     function checkToolTip(event, cb) {
       for (let el of event.path) {
         if (rootElement === el) {
-          selection = window.getSelection();
-          text = selection.toString();
-          return cb();
+          selection = window.getSelection()
+          text = selection.toString()
+          return cb()
         }
       }
-      return removeToolTip();
+      return removeToolTip()
     }
 
     function attachEvents() {
       function hasSelection() {
-        return !!window.getSelection().toString();
+        return !!window.getSelection().toString()
       }
 
       function hasTooltipDrawn() {
-        return !!document.querySelector('.selection');
+        return !!document.getElementById(selectionId)
       }
 
       window.addEventListener(
         'mouseup',
-        function(event) {
-          setTimeout(function mouseTimeout() {
+        event => {
+          setTimeout(() => {
             if (hasTooltipDrawn()) {
               if (hasSelection()) { 
-                checkToolTip(event, moveTooltip);
+                checkToolTip(event, moveTooltip)
               } else {
-                removeToolTip();
+                removeToolTip()
               }
             } else if (hasSelection()) {
-              checkToolTip(event, drawTooltip);
+              checkToolTip(event, drawTooltip)
             }
-          }, 10);
+          }, 10)
         },
         false
-      );
+      )
     }
 
     function config(options) {
-      if (options.menu) menu = options.menu;
-      if (options.rootElement) rootElement = options.rootElement;
-      if (options.backgroundColor) bgcolor = options.backgroundColor;
-      if (options.iconColor) iconcolor = options.iconcolor;
-      menu.disable = options.disable === undefined ? menu.disable : options.disable;
-      return this;
+      if (options.menu) menu = options.menu
+      if (options.rootElement) rootElement = options.rootElement
+      if (options.backgroundColor) bgcolor = options.backgroundColor
+      if (options.iconColor) iconcolor = options.iconcolor
+      menu.disable = options.disable === undefined ? menu.disable : options.disable
+      return this
     }
 
     function init() {
-      IconStyle();
-      attachEvents();
-      return this;
+      IconStyle()
+      attachEvents()
+      return this
     }
 
     return {
       config: config,
       init: init
-    };
+    }
   }
 
-  return _selection;
-})();
+  return _selection
+})()
