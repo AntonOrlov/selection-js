@@ -1,7 +1,7 @@
 {
   "name": "selection-js",
   "version": "1.1.0",
-  "description": "Js library which provides customizable tooltip menu on text selection",
+  "description": "Js library which provides a customizable tooltip menu on text selection",
   "main": "selection.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
